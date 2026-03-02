@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoScan - Permissions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0F172A', // Deep blue/black from inspiration
+                            primary: '#B46445', // Terracotta/Brown accent from inspiration
+                            secondary: '#F5F2EF', // Light beige bg from inspiration
+                            accent: '#3B82F6', // Blue accent for links/focus
+                            surface: '#FFFFFF',
+                            text: '#1E293B',
+                            muted: '#64748B',
+                            error: '#EF4444',
+                            success: '#10B981',
+                            warning: '#F59E0B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'card': '0 10px 40px -10px rgba(0, 0, 0, 0.08)',
+                        'glow': '0 0 20px rgba(180, 100, 69, 0.3)',
+                        'inner-light': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.3)'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom scrollbar hiding */
+        ::-webkit-scrollbar { display: none; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .ios-toggle {
+            transition: background-color 0.3s ease;
+        }
+        .ios-toggle-circle {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-brand-secondary font-sans text-brand-text min-h-screen flex flex-col md:items-center md:justify-center p-0 md:p-6 lg:p-8">
+
+    <!-- Main Container - Full width on mobile, Centered card on desktop. Removed h-screen to prevent clipping -->
+    <div id="app-container" class="w-full min-h-screen md:min-h-0 md:max-w-[1200px] bg-white md:rounded-[32px] shadow-2xl overflow-hidden flex flex-col lg:flex-row relative">
+        
+        <!-- Left Side: Permissions Content -->
+        <div class="w-full lg:w-1/2 p-6 md:p-12 lg:p-16 flex flex-col relative z-10 bg-white">
+            
+            <!-- Branding Header -->
+            <div class="flex items-center justify-between mb-8 lg:mb-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-brand-dark rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-dark/20">
+                        <i class="fa-solid fa-barcode text-xl"></i>
+                    </div>
+                    <span class="text-xl md:text-2xl font-bold tracking-tight text-brand-dark">PromoScan</span>
+                </div>
+                <!-- Progress Indicator Fix -->
+                <div class="flex gap-1.5">
+                    <div class="w-8 h-1.5 rounded-full bg-brand-primary"></div>
+                    <div class="w-8 h-1.5 rounded-full bg-gray-200"></div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="flex-1 flex flex-col justify-center max-w-lg mx-auto w-full animate-fade-in">
+                
+                <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-dark mb-4 leading-tight">
+                    Let's get you <span class="text-brand-primary">setup</span>
+                </h1>
+                <p class="text-brand-muted text-lg mb-10 leading-relaxed">
+                    To find the best deals and keep you updated, PromoScan needs access to a few things on your device.
+                </p>
+
+                <!-- Permission Cards Container -->
+                <div class="space-y-4 md:space-y-6 mb-10">
+                    
+                    <!-- Camera Permission Card -->
+                    <div id="camera-permission-card" class="group relative bg-white border border-gray-100 rounded-2xl p-4 md:p-5 shadow-soft hover:shadow-card transition-all duration-300">
+                        <div class="flex flex-col sm:flex-row items-start gap-4 md:gap-5">
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-blue-50 text-brand-accent flex items-center justify-center text-xl md:text-2xl shrink-0 group-hover:bg-brand-accent group-hover:text-white transition-colors duration-300">
+                                <i class="fa-solid fa-camera"></i>
+                            </div>
+                            <div class="flex-1 w-full">
+                                <h3 class="text-base md:text-lg font-bold text-brand-dark mb-1">Camera Access</h3>
+                                <p class="text-xs md:text-sm text-brand-muted leading-snug mb-3">Required to scan product barcodes and identify items instantly.</p>
+                                
+                                <!-- Action Area -->
+                                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-2">
+                                    <span id="camera-status" class="text-[10px] md:text-xs font-medium text-brand-muted flex items-center gap-1.5">
+                                        <i class="fa-regular fa-circle text-gray-400"></i> Not allowed yet
+                                    </span>
+                                    <button onclick="requestPermission('camera')" id="btn-camera" class="w-full sm:w-auto text-xs md:text-sm font-semibold text-brand-accent hover:text-brand-dark px-4 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors">
+                                        Allow Access
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Success Overlay (Hidden by default) -->
+                        <div id="camera-success" class="hidden absolute inset-0 bg-brand-success/5 rounded-2xl border-2 border-brand-success flex items-center justify-center backdrop-blur-[1px]">
+                            <div class="flex items-center gap-2 text-brand-success font-bold bg-white px-4 py-2 rounded-full shadow-sm">
+                                <i class="fa-solid fa-check-circle text-xl"></i>
+                                <span>Allowed</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Permission Card -->
+                    <div id="notification-permission-card" class="group relative bg-white border border-gray-100 rounded-2xl p-4 md:p-5 shadow-soft hover:shadow-card transition-all duration-300">
+                        <div class="flex flex-col sm:flex-row items-start gap-4 md:gap-5">
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-orange-50 text-brand-primary flex items-center justify-center text-xl md:text-2xl shrink-0 group-hover:bg-brand-primary group-hover:text-white transition-colors duration-300">
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+                            <div class="flex-1 w-full">
+                                <h3 class="text-base md:text-lg font-bold text-brand-dark mb-1">Notifications</h3>
+                                <p class="text-xs md:text-sm text-brand-muted leading-snug mb-3">Get alerts for price drops, expiring coupons, and nearby deals.</p>
+                                
+                                <!-- Action Area -->
+                                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-2">
+                                    <span id="notification-status" class="text-[10px] md:text-xs font-medium text-brand-muted flex items-center gap-1.5">
+                                        <i class="fa-regular fa-circle text-gray-400"></i> Not allowed yet
+                                    </span>
+                                    <button onclick="requestPermission('notification')" id="btn-notification" class="w-full sm:w-auto text-xs md:text-sm font-semibold text-brand-primary hover:text-brand-dark px-4 py-2 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors">
+                                        Allow Access
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Success Overlay (Hidden by default) -->
+                        <div id="notification-success" class="hidden absolute inset-0 bg-brand-success/5 rounded-2xl border-2 border-brand-success flex items-center justify-center backdrop-blur-[1px]">
+                            <div class="flex items-center gap-2 text-brand-success font-bold bg-white px-4 py-2 rounded-full shadow-sm">
+                                <i class="fa-solid fa-check-circle text-xl"></i>
+                                <span>Allowed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Actions -->
+                <div class="flex flex-col gap-3">
+                    <button id="btn-continue" disabled class="w-full bg-gray-200 text-gray-400 font-bold py-3 md:py-4 px-6 rounded-full shadow-none cursor-not-allowed transition-all duration-300 text-base md:text-lg flex items-center justify-center gap-2">
+                        <span>Continue</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    
+                    <button class="w-full bg-transparent hover:bg-gray-50 text-brand-muted font-medium py-2 md:py-3 px-6 rounded-full transition-colors duration-300 text-xs md:text-sm">
+                        Not now, I'll do this later
+                    </button>
+                </div>
+            </div>
+
+            <!-- Legal Footer -->
+            <div class="mt-8 text-center lg:text-left">
+                <p class="text-xs text-gray-400">
+                    You can change these permissions at any time in your device settings. 
+                    <a href="#" class="underline hover:text-brand-dark">Learn more</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Side: Visual Context -->
+        <div class="hidden lg:flex w-1/2 bg-brand-dark relative overflow-hidden items-center justify-center p-8 lg:p-12">
+            
+            <!-- Background Gradients -->
+            <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-primary/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4"></div>
+            
+            <!-- Pattern Overlay -->
+            <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+
+            <!-- Interactive Preview Container -->
+            <div class="relative z-10 w-full max-w-md">
+                
+                <!-- Floating Elements -->
+                <div class="relative">
+                    
+                    <!-- Central Phone Mockup -->
+                    <div class="relative w-56 lg:w-64 h-[480px] lg:h-[520px] mx-auto bg-gray-900 rounded-[40px] border-[8px] border-gray-800 shadow-2xl overflow-hidden transform rotate-[-2deg] hover:rotate-0 transition-transform duration-500">
+                        <!-- Screen Content -->
+                        <div class="w-full h-full bg-gradient-to-br from-gray-800 to-black relative flex flex-col">
+                            
+                            <!-- Fake UI Header -->
+                            <div class="h-14 bg-white/5 backdrop-blur-sm border-b border-white/5 flex items-center px-4 justify-between">
+                                <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                                    <i class="fa-solid fa-bars text-white/60 text-xs"></i>
+                                </div>
+                                <div class="text-white/80 text-xs font-semibold tracking-wider">SCANNER</div>
+                                <div class="w-8 h-8 rounded-full bg-brand-primary text-white flex items-center justify-center text-xs font-bold shadow-glow">
+                                    JD
+                                </div>
+                            </div>
+
+                            <!-- Camera Viewfinder UI -->
+                            <div class="flex-1 relative flex items-center justify-center p-6">
+                                <!-- Crosshairs -->
+                                <div class="absolute inset-8 border-2 border-white/20 rounded-3xl"></div>
+                                <div class="absolute top-8 left-8 w-4 h-4 border-t-2 border-l-2 border-brand-primary"></div>
+                                <div class="absolute top-8 right-8 w-4 h-4 border-t-2 border-r-2 border-brand-primary"></div>
+                                <div class="absolute bottom-8 left-8 w-4 h-4 border-b-2 border-l-2 border-brand-primary"></div>
+                                <div class="absolute bottom-8 right-8 w-4 h-4 border-b-2 border-r-2 border-brand-primary"></div>
+                                
+                                <!-- Scanning Line Animation -->
+                                <div class="absolute top-1/2 left-8 right-8 h-0.5 bg-brand-primary shadow-[0_0_10px_rgba(180,100,69,0.8)] animate-[pulse_2s_ease-in-out_infinite]"></div>
+                                
+                                <!-- Product Placeholder -->
+                                <div class="w-32 h-48 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 flex items-center justify-center transform scale-90 opacity-60">
+                                    <i class="fa-solid fa-box-open text-4xl text-white/20"></i>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Controls -->
+                            <div class="h-24 bg-black/40 backdrop-blur-md flex items-center justify-center gap-8 pb-4">
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/60">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+                                <div class="w-16 h-16 rounded-full border-4 border-white flex items-center justify-center bg-white/10">
+                                    <div class="w-12 h-12 rounded-full bg-white"></div>
+                                </div>
+                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/60">
+                                    <i class="fa-solid fa-image"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Notification Card -->
+                    <div class="absolute top-20 -right-4 w-64 bg-white/90 backdrop-blur-xl p-4 rounded-xl shadow-2xl border border-white/20 animate-[bounce_4s_infinite]">
+                        <div class="flex gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-brand-primary/10 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-tag text-brand-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-900">Price Drop Alert!</h4>
+                                <p class="text-xs text-gray-500 mt-1">Those headphones you scanned are now 20% off at Target.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Permission Badge -->
+                    <div class="absolute bottom-32 -left-8 bg-brand-accent text-white px-4 py-2 rounded-lg shadow-lg shadow-blue-500/30 flex items-center gap-2 transform -rotate-3">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span class="text-sm font-bold">Secure & Private</span>
+                    </div>
+
+                </div>
+                
+                <div class="mt-12 text-center">
+                    <h2 class="text-2xl font-bold text-white mb-2">Why we need this?</h2>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">
+                        Your privacy is important. We only access your camera when you're scanning, and we only send notifications about deals relevant to you.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation (Consistent with Login screen - simulated/hidden logic) -->
+        <!-- NOTE: As per instructions, this is a permissions screen usually shown before main app access. 
+             However, to maintain "consistency" with the app shell if requested, we'll keep the structure clean. 
+             The prompt asked to "Keep the navigation consistent with previously built screens". 
+             The previous login screen did NOT have a visible bottom nav, so we will not add one here to maintain that specific consistency for pre-auth/onboarding flows.
+        -->
+
+    </div>
+
+    <!-- Permission Dialog Modal (Hidden by default) -->
+    <!-- This simulates the OS native permission dialog -->
+    <div id="permission-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        
+        <!-- OS Dialog Simulation -->
+        <div class="bg-white/90 backdrop-blur-xl w-full max-w-[270px] rounded-[14px] text-center overflow-hidden relative z-10 shadow-2xl transform transition-all scale-100 animate-slide-up">
+            <div class="pt-5 pb-4 px-4">
+                <h3 class="text-[17px] font-semibold text-black mb-1">"PromoScan" Would Like to Access the Camera</h3>
+                <p class="text-[13px] text-black leading-snug">This lets you scan barcodes to find deals and coupons instantly.</p>
+            </div>
+            <div class="border-t border-gray-300/50 flex">
+                <button onclick="denyPermission()" class="flex-1 py-3 text-[17px] text-[#007AFF] font-normal border-r border-gray-300/50 active:bg-gray-200 transition-colors">
+                    Don't Allow
+                </button>
+                <button onclick="approvePermission()" class="flex-1 py-3 text-[17px] text-[#007AFF] font-semibold active:bg-gray-200 transition-colors">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error/Settings Toast (Hidden by default) -->
+    <div id="error-toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 hidden w-[90%] max-w-md">
+        <div class="bg-brand-dark text-white p-4 rounded-xl shadow-2xl flex items-start gap-3 border border-gray-700">
+            <i class="fa-solid fa-circle-exclamation text-brand-error mt-0.5"></i>
+            <div class="flex-1">
+                <h4 class="font-bold text-sm mb-1">Permission Denied</h4>
+                <p class="text-xs text-gray-300 mb-2">You previously denied this permission. Please enable it in settings to continue.</p>
+                <button onclick="openSettingsSimulation()" class="text-xs font-bold text-brand-accent hover:text-white transition-colors">
+                    Open Settings <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+            <button onclick="closeErrorToast()" class="text-gray-500 hover:text-white">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentPermissionType = '';
+        let permissions = {
+            camera: false,
+            notification: false
+        };
+
+        function requestPermission(type) {
+            currentPermissionType = type;
+            const modal = document.getElementById('permission-modal');
+            const modalTitle = modal.querySelector('h3');
+            const modalDesc = modal.querySelector('p');
+            
+            // Customize modal text based on type
+            if (type === 'camera') {
+                modalTitle.innerText = '"PromoScan" Would Like to Access the Camera';
+                modalDesc.innerText = 'This lets you scan barcodes to find deals and coupons instantly.';
+            } else {
+                modalTitle.innerText = '"PromoScan" Would Like to Send You Notifications';
+                modalDesc.innerText = 'Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.';
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('permission-modal').classList.add('hidden');
+        }
+
+        function approvePermission() {
+            closeModal();
+            permissions[currentPermissionType] = true;
+            updateUI(currentPermissionType, true);
+            checkAllPermissions();
+        }
+
+        function denyPermission() {
+            closeModal();
+            // Show error toast guiding to settings
+            const toast = document.getElementById('error-toast');
+            toast.classList.remove('hidden');
+            toast.classList.add('animate-fade-in');
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                closeErrorToast();
+            }, 6000);
+        }
+
+        function closeErrorToast() {
+            document.getElementById('error-toast').classList.add('hidden');
+        }
+
+        function openSettingsSimulation() {
+            alert("Redirecting to OS Settings...");
+            closeErrorToast();
+        }
+
+        function updateUI(type, granted) {
+            const btn = document.getElementById(`btn-${type}`);
+            const status = document.getElementById(`${type}-status`);
+            const successOverlay = document.getElementById(`${type}-success`);
+            const card = document.getElementById(`${type}-permission-card`);
+
+            if (granted) {
+                // Change button state
+                btn.innerText = 'Allowed';
+                btn.classList.remove('bg-blue-50', 'bg-orange-50', 'text-brand-accent', 'text-brand-primary');
+                btn.classList.add('bg-green-50', 'text-brand-success', 'cursor-default');
+                btn.disabled = true;
+
+                // Update status text
+                status.innerHTML = '<i class="fa-solid fa-check-circle text-brand-success"></i> Enabled';
+                status.classList.remove('text-brand-muted');
+                status.classList.add('text-brand-success');
+
+                // Show success overlay temporarily
+                successOverlay.classList.remove('hidden');
+                successOverlay.classList.add('animate-fade-in');
+                
+                // Style the card to look "completed"
+                card.classList.add('border-brand-success/30', 'bg-green-50/10');
+            }
+        }
+
+        function checkAllPermissions() {
+            const btnContinue = document.getElementById('btn-continue');
+            
+            // Enable continue if at least one permission is granted (or both, depending on strictness. Let's say at least Camera is mandatory for a scanning app)
+            if (permissions.camera) {
+                btnContinue.disabled = false;
+                btnContinue.classList.remove('bg-gray-200', 'text-gray-400', 'cursor-not-allowed');
+                btnContinue.classList.add('bg-brand-primary', 'text-white', 'hover:bg-[#9A5235]', 'shadow-lg', 'shadow-brand-primary/30', 'transform', 'hover:-translate-y-0.5');
+                
+                // Add click handler if enabled
+                btnContinue.onclick = function() {
+                    // Simulate navigation to next screen
+                    btnContinue.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+                    setTimeout(() => {
+                        alert("Permissions granted! Proceeding to Camera Scan...");
+                    }, 1000);
+                };
+            }
+        }
+    </script>
+</body>
+</html>

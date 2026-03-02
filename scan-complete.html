@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoScan - Processing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0F172A', // Deep blue/black
+                            primary: '#B46445', // Terracotta/Brown accent
+                            secondary: '#F5F2EF', // Light beige bg
+                            accent: '#3B82F6', // Blue accent
+                            surface: '#FFFFFF',
+                            text: '#1E293B',
+                            muted: '#94A3B8',
+                            error: '#EF4444',
+                            success: '#10B981',
+                            warning: '#F59E0B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'card': '0 10px 40px -10px rgba(0, 0, 0, 0.2)',
+                        'glow': '0 0 30px rgba(180, 100, 69, 0.4)',
+                        'inner-glow': 'inset 0 0 20px rgba(255, 255, 255, 0.05)'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'progress': 'progress 2s ease-in-out infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        progress: {
+                            '0%': { width: '0%' },
+                            '50%': { width: '70%' },
+                            '100%': { width: '100%' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { display: none; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .progress-gradient {
+            background: linear-gradient(90deg, #B46445 0%, #F59E0B 50%, #B46445 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+        .scan-grid {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-black font-sans text-white h-screen overflow-hidden flex flex-col items-center justify-center">
+
+    <!-- App Container -->
+    <div id="app-container" class="w-full h-full md:max-w-[480px] md:max-h-[850px] md:h-[90vh] bg-brand-dark md:rounded-[40px] shadow-2xl overflow-hidden relative flex flex-col">
+        
+        <!-- Background Elements -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-brand-dark via-gray-900 to-black"></div>
+            <div class="absolute inset-0 scan-grid opacity-20"></div>
+            <!-- Decorative Glows -->
+            <div class="absolute top-[-10%] left-[-10%] w-64 h-64 bg-brand-primary/20 rounded-full blur-[80px]"></div>
+            <div class="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-brand-accent/10 rounded-full blur-[80px]"></div>
+        </div>
+
+        <!-- Top Bar -->
+        <div class="relative z-20 pt-12 pb-4 px-6 flex justify-between items-center">
+            <!-- Back/Cancel Button -->
+            <button onclick="goBack()" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/10 transition-all active:scale-95 group">
+                <i class="fa-solid fa-xmark text-white/70 group-hover:text-white text-lg"></i>
+            </button>
+            
+            <!-- App Logo/Title -->
+            <div class="flex flex-col items-center">
+                <span class="text-sm font-semibold tracking-wider text-white/90 uppercase">Processing</span>
+            </div>
+
+            <!-- Help/Support -->
+            <button class="w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/10 transition-all active:scale-95 group">
+                <i class="fa-regular fa-circle-question text-white/70 group-hover:text-white text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="relative z-10 flex-1 flex flex-col items-center px-4 md:px-6 pt-8 pb-24 overflow-y-auto w-full max-w-7xl mx-auto">
+            
+            <!-- Captured Image Thumbnail with Scan Effect -->
+            <div class="relative w-48 h-48 md:w-64 md:h-64 mb-8 md:10 animate-float">
+                <!-- Glowing Ring -->
+                <div class="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-brand-primary/40 to-brand-accent/40 blur-xl opacity-50 animate-pulse-slow"></div>
+                
+                <!-- Image Container -->
+                <div class="relative w-full h-full rounded-2xl overflow-hidden border border-white/20 shadow-card bg-gray-800">
+                    <img class="w-full h-full object-cover opacity-60" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/d57ec656e3-7a73e702a69b43a89b40.png" alt="professional card image, modern design" />
+                    
+                    <!-- Scanning Overlay -->
+                    <div class="absolute inset-0 bg-brand-dark/30"></div>
+                    
+                    <!-- Active Scan Line -->
+                    <div class="absolute top-0 left-0 w-full h-[2px] bg-brand-primary shadow-[0_0_15px_rgba(180,100,69,1)] animate-scan-line"></div>
+                    
+                    <!-- Corner Accents -->
+                    <div class="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-white/60 rounded-tl-lg"></div>
+                    <div class="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-white/60 rounded-tr-lg"></div>
+                    <div class="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-white/60 rounded-bl-lg"></div>
+                    <div class="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-white/60 rounded-br-lg"></div>
+
+                    <!-- Analyzing Icon Overlay -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-black/40 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/10">
+                            <i class="fa-solid fa-magnifying-glass-chart text-2xl text-white animate-pulse"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Section -->
+            <div class="w-full max-w-md flex flex-col items-center text-center space-y-6">
+                
+                <!-- Dynamic Status Text -->
+                <div class="space-y-2">
+                    <h2 id="status-heading" class="text-xl md:text-2xl font-bold text-white tracking-tight">Initializing...</h2>
+                    <p id="status-subtext" class="text-brand-muted text-xs md:text-sm">Preparing secure scan environment</p>
+                </div>
+
+                <!-- Progress Bar Container -->
+                <div class="w-full space-y-2">
+                    <div class="h-2.5 w-full bg-gray-800 rounded-full overflow-hidden border border-white/5">
+                        <div id="progress-bar" class="h-full w-0 progress-gradient rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] md:text-xs text-brand-muted font-medium px-1">
+                        <span id="progress-percentage">0%</span>
+                        <span>Estimated: <span id="time-remaining">4s</span></span>
+                    </div>
+                </div>
+
+                <!-- Steps Checklist (Visual Feedback) -->
+                <div id="steps-container" class="w-full bg-white/5 rounded-2xl p-4 md:p-5 border border-white/5 backdrop-blur-sm space-y-4 mt-4">
+                    <!-- Step 1 -->
+                    <div data-step="1" class="flex items-center gap-3 transition-all duration-300">
+                        <div class="step-icon w-6 h-6 rounded-full bg-white/10 flex items-center justify-center border border-white/10 text-white/30 text-[10px]">
+                            <i class="fa-solid fa-circle"></i>
+                        </div>
+                        <span class="step-text text-sm text-white/60 font-medium">Analyzing Image</span>
+                    </div>
+                    <!-- Step 2 -->
+                    <div data-step="2" class="flex items-center gap-3 opacity-50 transition-all duration-300">
+                        <div class="step-icon w-6 h-6 rounded-full bg-white/10 flex items-center justify-center border border-white/10 text-white/30 text-[10px]">
+                            <i class="fa-solid fa-circle"></i>
+                        </div>
+                        <span class="step-text text-sm text-white/60 font-medium">Matching Database</span>
+                    </div>
+                    <!-- Step 3 -->
+                    <div data-step="3" class="flex items-center gap-3 opacity-50 transition-all duration-300">
+                        <div class="step-icon w-6 h-6 rounded-full bg-white/10 flex items-center justify-center border border-white/10 text-white/30 text-[10px]">
+                            <i class="fa-solid fa-circle"></i>
+                        </div>
+                        <span class="step-text text-sm text-white/60 font-medium">Finding Best Deals</span>
+                    </div>
+                </div>
+
+                <!-- Retry Button -->
+                <div id="error-container" class="hidden flex-col items-center w-full mt-4 animate-fade-in">
+                    <div class="p-4 bg-red-500/10 border border-red-500/20 rounded-xl w-full mb-4 flex items-start gap-3">
+                        <i class="fa-solid fa-triangle-exclamation text-brand-error mt-0.5"></i>
+                        <div class="text-left">
+                            <p class="text-sm text-white font-medium">Scan Failed</p>
+                            <p class="text-xs text-brand-muted mt-1">Could not identify the product clearly. Please try again with better lighting.</p>
+                        </div>
+                    </div>
+                    <button onclick="retryScan()" class="w-full py-3 bg-white text-brand-dark font-semibold rounded-xl hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        Retry Scan
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Navigation (Fixed) -->
+        <div class="absolute bottom-0 left-0 right-0 h-[80px] bg-black/40 backdrop-blur-xl border-t border-white/10 flex items-center justify-between px-6 pb-2 z-50">
+            <!-- Scan Tab (Active) -->
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-brand-primary">
+                <div class="relative p-1">
+                    <i class="fa-solid fa-expand text-xl"></i>
+                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-brand-primary rounded-full animate-pulse"></span>
+                </div>
+                <span class="text-[10px] font-semibold">Scan</span>
+            </button>
+
+            <!-- Search Tab -->
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-magnifying-glass text-xl"></i>
+                <span class="text-[10px] font-medium">Search</span>
+            </button>
+
+            <!-- Wallet Tab -->
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-wallet text-xl"></i>
+                <span class="text-[10px] font-medium">Wallet</span>
+            </button>
+
+            <!-- Profile Tab -->
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <div class="w-6 h-6 rounded-full bg-white/20 overflow-hidden border border-white/10">
+                    <img class="w-full h-full object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/2ddcd57b42-cef58db7c62a5f990a82.png" alt="Profile" />
+                </div>
+                <span class="text-[10px] font-medium">Profile</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Simulation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-percentage');
+            const statusHeading = document.getElementById('status-heading');
+            const statusSubtext = document.getElementById('status-subtext');
+            const timeRemaining = document.getElementById('time-remaining');
+            const stepsContainer = document.getElementById('steps-container');
+            
+            let progress = 0;
+            const intervalTime = 50;
+
+            // Initial state setup
+            activateStep(1);
+            statusHeading.innerText = "Identifying Product...";
+            statusSubtext.innerText = "Analyzing image features and barcode data";
+
+            const interval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = `${progress}%`;
+                progressText.innerText = `${progress}%`;
+
+                if(progress < 35) timeRemaining.innerText = "3s";
+                else if(progress < 70) timeRemaining.innerText = "2s";
+                else timeRemaining.innerText = "1s";
+
+                if (progress === 35) {
+                    completeStep(1);
+                    activateStep(2);
+                    statusHeading.innerText = "Matching Database...";
+                    statusSubtext.innerText = "Checking product catalog and inventory";
+                }
+
+                if (progress === 70) {
+                    completeStep(2);
+                    activateStep(3);
+                    statusHeading.innerText = "Checking Offers...";
+                    statusSubtext.innerText = "Finding active coupons and cashback";
+                }
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    completeStep(3);
+                    statusHeading.innerText = "Complete!";
+                    statusSubtext.innerText = "Redirecting to results...";
+                    timeRemaining.innerText = "0s";
+                }
+            }, intervalTime);
+
+            function getStepElements(num) {
+                const row = stepsContainer.querySelector(`[data-step="${num}"]`);
+                return {
+                    row,
+                    icon: row.querySelector('.step-icon'),
+                    text: row.querySelector('.step-text')
+                };
+            }
+
+            function completeStep(stepNum) {
+                const { icon, text } = getStepElements(stepNum);
+                icon.className = "step-icon w-6 h-6 rounded-full bg-brand-success flex items-center justify-center border border-brand-success text-white text-[10px] shadow-[0_0_10px_rgba(16,185,129,0.4)]";
+                icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+                text.className = "step-text text-sm text-brand-success font-medium";
+            }
+
+            function activateStep(stepNum) {
+                const { row, icon, text } = getStepElements(stepNum);
+                row.classList.remove('opacity-50');
+                icon.className = "step-icon w-6 h-6 rounded-full bg-brand-primary/20 flex items-center justify-center border border-brand-primary/50 text-brand-primary text-[10px]";
+                icon.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                text.className = "step-text text-sm text-white font-medium";
+            }
+        });
+
+        function goBack() {
+            if(confirm("Cancel scanning and return to camera?")) {
+                console.log("Returning to camera...");
+            }
+        }
+
+        function retryScan() {
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>

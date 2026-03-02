@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoScan - Welcome & Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0F172A', // Deep blue/black from inspiration
+                            primary: '#B46445', // Terracotta/Brown accent from inspiration
+                            secondary: '#F5F2EF', // Light beige bg from inspiration
+                            accent: '#3B82F6', // Blue accent for links/focus
+                            surface: '#FFFFFF',
+                            text: '#1E293B',
+                            muted: '#64748B',
+                            error: '#EF4444',
+                            success: '#10B981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'card': '0 10px 40px -10px rgba(0, 0, 0, 0.08)',
+                        'glow': '0 0 20px rgba(180, 100, 69, 0.3)'
+                    }
+                }
+            }
+        }
+    </script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom scrollbar hiding */
+        ::-webkit-scrollbar { display: none; }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .input-transition {
+            transition: all 0.3s ease;
+        }
+        .input-transition:focus-within {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="bg-brand-secondary font-sans text-brand-text min-h-screen flex items-center justify-center p-0 sm:p-6 lg:p-8">
+
+    <!-- Main Container - Full screen on mobile, Centered card on desktop -->
+    <div id="app-container" class="w-full h-screen sm:h-auto sm:max-w-[1200px] sm:min-h-[800px] bg-white sm:rounded-[32px] shadow-2xl overflow-hidden flex flex-col lg:flex-row relative">
+        
+        <!-- Left Side: Login Form Section -->
+        <div class="w-full lg:w-1/2 p-6 sm:p-12 lg:p-16 flex flex-col justify-center relative z-10 bg-white min-h-full">
+            
+            <!-- Branding -->
+            <div class="flex items-center gap-3 mb-8 lg:mb-12">
+                <div class="w-10 h-10 bg-brand-dark rounded-xl flex items-center justify-center text-white">
+                    <i class="fa-solid fa-barcode text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-brand-dark">PromoScan</span>
+            </div>
+
+            <!-- Welcome Text -->
+            <div class="mb-8">
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-dark mb-3">Welcome back</h1>
+                <p class="text-brand-muted text-base md:text-lg lg:text-xl">Enter your details to access your wallet and latest scans.</p>
+            </div>
+
+            <!-- Social Login -->
+            <button class="w-full bg-white border border-gray-200 hover:bg-gray-50 text-brand-text font-medium py-3.5 px-4 rounded-full flex items-center justify-center gap-3 transition-all duration-300 shadow-sm hover:shadow-md mb-6 group">
+                <img class="w-6 h-6" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/39cca314b0-cc9ee24512f0fbf34bc7.png" alt="Google logo icon, flat design, colorful" />
+                <span>Sign in with Google</span>
+            </button>
+
+            <div class="relative flex items-center justify-center mb-6">
+                <div class="border-t border-gray-200 w-full absolute"></div>
+                <span class="bg-white px-4 text-sm text-gray-400 relative z-10">or continue with email</span>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="event.preventDefault(); validateForm();" class="space-y-5">
+                
+                <!-- Email/Phone Input -->
+                <div class="space-y-2">
+                    <label for="email" class="block text-sm font-semibold text-brand-dark ml-1">Email or Phone</label>
+                    <div class="input-transition relative">
+                        <input type="text" id="email" 
+                               class="w-full bg-white border border-gray-200 text-brand-dark text-sm rounded-2xl focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary block w-full p-4 pl-12 outline-none" 
+                               placeholder="name@example.com">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400">
+                            <i class="fa-regular fa-envelope"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="space-y-2">
+                    <label for="password" class="block text-sm font-semibold text-brand-dark ml-1">Password</label>
+                    <div class="input-transition relative">
+                        <input type="password" id="password" 
+                               class="w-full bg-white border border-gray-200 text-brand-dark text-sm rounded-2xl focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary block w-full p-4 pl-12 pr-12 outline-none" 
+                               placeholder="Enter your password">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-brand-dark transition-colors">
+                            <i class="fa-regular fa-eye-slash"></i>
+                        </button>
+                    </div>
+                    <!-- Error Message (Hidden by default) -->
+                    <div id="password-error" class="hidden flex items-center gap-2 text-brand-error text-xs mt-1 ml-1 animate-pulse">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>Incorrect password. Please try again.</span>
+                    </div>
+                </div>
+
+                <!-- Remember & Forgot -->
+                <div class="flex items-center justify-between pt-1">
+                    <div class="flex items-center">
+                        <input id="remember-me" type="checkbox" class="w-5 h-5 border-gray-300 rounded text-brand-primary focus:ring-brand-primary/50 transition duration-150 ease-in-out cursor-pointer accent-brand-primary">
+                        <label for="remember-me" class="ml-2 block text-sm text-brand-muted cursor-pointer select-none">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm font-medium text-brand-muted hover:text-brand-primary transition-colors">Forgot password?</a>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-brand-primary hover:bg-[#9A5235] text-white font-semibold py-4 px-6 rounded-full shadow-lg shadow-brand-primary/30 hover:shadow-brand-primary/50 transform hover:-translate-y-0.5 transition-all duration-300 text-lg mt-4">
+                    Log In
+                </button>
+
+            </form>
+
+            <!-- Footer Links -->
+            <div class="mt-8 text-center">
+                <p class="text-sm text-brand-muted">
+                    Don't have an account? <a href="#" class="font-semibold text-brand-dark hover:text-brand-primary transition-colors">Sign up</a>
+                </p>
+                <div class="mt-6 flex justify-center gap-6 text-xs text-gray-400">
+                    <a href="#" class="hover:text-brand-muted transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-brand-muted transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Visual/Hero Section (Hidden on mobile/tablet, visible on large) -->
+        <div class="hidden lg:flex w-1/2 bg-brand-dark relative overflow-hidden items-center justify-center p-12">
+            
+            <!-- Background Gradients -->
+            <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-primary/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
+            <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4"></div>
+
+            <!-- Content Container -->
+            <div class="relative z-10 text-center max-w-md">
+                <div class="mb-10 relative">
+                    <!-- Phone Mockup Illustration -->
+                    <div class="relative w-64 h-[500px] mx-auto bg-gray-900 rounded-[40px] border-[8px] border-gray-800 shadow-2xl overflow-hidden">
+                        <!-- Screen Content -->
+                        <div class="w-full h-full bg-gradient-to-b from-gray-800 to-black p-4 flex flex-col relative">
+                            <!-- Status Bar -->
+                            <div class="flex justify-between text-[10px] text-white mb-4 px-2 opacity-80">
+                                <span>9:41</span>
+                                <div class="flex gap-1">
+                                    <i class="fa-solid fa-signal"></i>
+                                    <i class="fa-solid fa-wifi"></i>
+                                    <i class="fa-solid fa-battery-full"></i>
+                                </div>
+                            </div>
+                            
+                            <!-- App Content inside Mockup -->
+                            <div class="flex-1 flex flex-col justify-center items-center">
+                                <div class="w-16 h-16 bg-brand-primary/20 rounded-full flex items-center justify-center mb-4 animate-pulse">
+                                    <i class="fa-solid fa-camera text-brand-primary text-2xl"></i>
+                                </div>
+                                <div class="text-white text-center mb-8">
+                                    <div class="text-xs text-gray-400 uppercase tracking-wider mb-1">Product Identified</div>
+                                    <div class="font-bold text-lg">Premium Headphones</div>
+                                </div>
+                                
+                                <img class="w-full rounded-xl mb-4 shadow-lg" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/db7ae56e14-a6c9433ba8097ef2657d.png" alt="Modern high-end headphones product shot, clean studio lighting, 3d render" />
+                                
+                                <!-- Benefit Card in Mockup -->
+                                <div class="w-full bg-gray-800/80 backdrop-blur-md rounded-xl p-3 border border-gray-700 mb-2 transform translate-x-4 shadow-lg">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center text-green-400 text-xs">
+                                            <i class="fa-solid fa-tag"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-white text-xs font-bold">15% Off Coupon</div>
+                                            <div class="text-[10px] text-gray-400">Best Buy • Expires in 2d</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Benefit Card 2 in Mockup -->
+                                <div class="w-full bg-gray-800/80 backdrop-blur-md rounded-xl p-3 border border-gray-700 transform -translate-x-2 shadow-lg">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center text-blue-400 text-xs">
+                                            <i class="fa-solid fa-credit-card"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-white text-xs font-bold">5% Cashback</div>
+                                            <div class="text-[10px] text-gray-400">Chase Freedom • Active</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scan Button in Mockup -->
+                            <div class="mt-auto mb-4 self-center">
+                                <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center text-brand-dark shadow-glow">
+                                    <i class="fa-solid fa-expand text-xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Elements -->
+                    <div class="absolute top-1/4 -right-12 bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/10 shadow-xl animate-bounce" style="animation-duration: 3s;">
+                        <div class="flex items-center gap-2">
+                            <span class="text-green-400 text-lg font-bold">-$24.50</span>
+                            <span class="text-white text-xs opacity-80">Saved today</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="text-3xl font-bold text-white mb-4">Scan. Save. Benefit.</h2>
+                <p class="text-gray-400 text-lg leading-relaxed">
+                    Instantly find coupons, cashback, and rewards for any product you scan. Your wallet just got smarter.
+                </p>
+                
+                <div class="mt-10 flex items-center justify-center gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                    <i class="fa-brands fa-cc-visa text-3xl text-white"></i>
+                    <i class="fa-brands fa-cc-mastercard text-3xl text-white"></i>
+                    <i class="fa-brands fa-cc-amex text-3xl text-white"></i>
+                    <i class="fa-brands fa-cc-paypal text-3xl text-white"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Bottom Navigation (Simulated for "Consistency" requirement, but usually hidden on Login) -->
+        <!-- Adding this to meet the "Keep navigation consistent" requirement even though it's a login screen -->
+        <!-- In a real app, this would likely be hidden until login, but for the design deliverable I will include it as a "preview" or disabled state if requested, but standard practice is to hide. 
+             However, the prompt says "Currently building: Welcome + Login" and "Keep the navigation consistent...".
+             To be safe and visually complete based on the prompt's explicit instruction about navigation order, I will add it but make it look distinct or part of the app shell if the user were logged in.
+             Actually, usually login screens cover the navigation. I will omit it for the PURE login screen to maintain UX integrity, 
+             BUT I will create a separate section below the login screen to show the "App Shell" components required by the prompt if I were building the inner screens.
+             
+             WAIT: The prompt asks for "Welcome screen". I will stick to the Login layout above. 
+             If I must include navigation, I will add it at the very bottom of the screen container fixed, but typically that's bad UX for login.
+             Let's strictly follow "Welcome + Login" scope. The "Keep navigation consistent" likely applies to the authenticated screens (Scan, Search, etc.). 
+             I will add a small "App Preview" section below or just focus on the login. 
+             
+             DECISION: I will NOT put the bottom nav on the login screen itself as it breaks the flow (you can't navigate to Wallet if you aren't logged in). 
+             I will focus on the Login/Welcome experience.
+        -->
+
+    </div>
+
+    <!-- Script for simple validation simulation -->
+    <script>
+        function validateForm() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('password-error');
+            const passwordInput = document.getElementById('password');
+            const emailInput = document.getElementById('email');
+
+            // Reset styles
+            errorMsg.classList.add('hidden');
+            passwordInput.classList.remove('border-brand-error', 'bg-red-50');
+            passwordInput.classList.add('border-gray-200');
+            emailInput.classList.remove('border-brand-error', 'bg-red-50');
+
+            if (!email) {
+                emailInput.classList.add('border-brand-error', 'bg-red-50');
+                emailInput.focus();
+                return;
+            }
+
+            if (!password || password.length < 6) {
+                // Show error state
+                errorMsg.classList.remove('hidden');
+                passwordInput.classList.remove('border-gray-200');
+                passwordInput.classList.add('border-brand-error', 'bg-red-50');
+                passwordInput.focus();
+            } else {
+                // Simulate success/loading
+                const btn = document.querySelector('button[type="submit"]');
+                const originalText = btn.innerText;
+                btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+                btn.classList.add('opacity-80', 'cursor-not-allowed');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('opacity-80', 'cursor-not-allowed');
+                    alert("Login simulation successful! Redirecting to Scan...");
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

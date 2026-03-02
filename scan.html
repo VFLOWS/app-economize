@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoScan - Scan Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0F172A', // Deep blue/black from previous screen
+                            primary: '#B46445', // Terracotta/Brown accent from previous screen
+                            secondary: '#F5F2EF', // Light beige bg from previous screen
+                            accent: '#3B82F6', // Blue accent
+                            surface: '#FFFFFF',
+                            text: '#1E293B',
+                            muted: '#64748B',
+                            error: '#EF4444',
+                            success: '#10B981',
+                            warning: '#F59E0B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'card': '0 10px 40px -10px rgba(0, 0, 0, 0.08)',
+                        'glow': '0 0 20px rgba(180, 100, 69, 0.3)',
+                        'shutter': '0 0 0 4px rgba(255, 255, 255, 0.3)'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan-line': 'scanLine 2.5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scanLine: {
+                            '0%': { top: '10%', opacity: '0' },
+                            '10%': { opacity: '1' },
+                            '90%': { opacity: '1' },
+                            '100%': { top: '90%', opacity: '0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { display: none; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .camera-overlay-gradient {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.6) 100%);
+        }
+    </style>
+</head>
+<body class="bg-black font-sans text-white h-screen overflow-hidden flex flex-col items-center justify-center">
+
+    <!-- App Container (Mobile Simulation Wrapper for Desktop View) -->
+    <div id="app-container" class="w-full h-full md:max-w-[480px] md:max-h-[850px] md:h-[90vh] bg-black md:rounded-[40px] shadow-2xl overflow-hidden relative flex flex-col">
+        
+        <!-- Top Bar (Floating on Camera) -->
+        <div class="absolute top-0 left-0 right-0 z-20 pt-12 pb-4 px-6 flex justify-between items-center bg-gradient-to-b from-black/60 to-transparent">
+            <!-- Flash Toggle -->
+            <button onclick="toggleFlash()" id="flash-btn" class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all active:scale-95">
+                <i class="fa-solid fa-bolt text-white text-lg"></i>
+            </button>
+            
+            <!-- App Logo/Title (Minimal) -->
+            <div class="flex flex-col items-center">
+                <span class="text-sm font-semibold tracking-wider text-white/90 uppercase">Scan Product</span>
+            </div>
+
+            <!-- History Button -->
+            <button class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/20 transition-all active:scale-95 relative">
+                <i class="fa-solid fa-clock-rotate-left text-white text-lg"></i>
+                <span class="absolute top-2 right-2 w-2 h-2 bg-brand-primary rounded-full border border-black"></span>
+            </button>
+        </div>
+
+        <!-- Camera Viewport (Main Content) -->
+        <div class="relative flex-1 bg-gray-900 w-full overflow-hidden">
+            
+            <!-- Simulated Camera Feed Image -->
+            <div class="absolute inset-0 w-full h-full bg-gray-800">
+                <img class="w-full h-full object-cover opacity-80" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/3cda3e5853-2f478ed0dff562e4ba39.png" alt="first person perspective holding a smartphone scanning a product box in a modern grocery store, cinematic lighting, shallow depth of field" />
+            </div>
+            
+            <!-- Dark Overlay for Contrast -->
+            <div class="absolute inset-0 bg-black/10"></div>
+
+            <!-- Scan Frame / Focus Area -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+                <div class="relative w-64 h-64 sm:w-72 sm:h-72 border border-white/20 rounded-[32px] overflow-hidden">
+                    <!-- Corner Markers -->
+                    <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white rounded-tl-2xl"></div>
+                    <div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-white rounded-tr-2xl"></div>
+                    <div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-white rounded-bl-2xl"></div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white rounded-br-2xl"></div>
+                    
+                    <!-- Scanning Laser Effect -->
+                    <div class="absolute left-0 right-0 h-[2px] bg-brand-primary shadow-[0_0_15px_rgba(180,100,69,0.9)] animate-scan-line"></div>
+                </div>
+                
+                <!-- Scan Tips -->
+                <div class="mt-8 px-6 py-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 animate-fade-in">
+                    <p class="text-white/90 text-sm font-medium flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-brand-primary"></i>
+                        Align barcode or product within frame
+                    </p>
+                </div>
+            </div>
+
+            <!-- Error State Overlay (Hidden by default) -->
+            <div id="camera-error" class="hidden absolute inset-0 z-30 bg-gray-900 flex flex-col items-center justify-center p-8 text-center">
+                <div class="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-video-slash text-gray-500 text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Camera Unavailable</h3>
+                <p class="text-gray-400 mb-8 max-w-xs">We can't access your camera. Please check your device settings or use manual search.</p>
+                <button onclick="hideError()" class="px-6 py-3 bg-brand-primary text-white rounded-xl font-medium hover:bg-opacity-90 transition-colors">
+                    Try Again
+                </button>
+            </div>
+        </div>
+
+        <!-- Controls Panel (Bottom Sheet Style) -->
+        <div class="relative z-20 pb-24 pt-6 glass-panel rounded-t-[32px] -mt-6">
+            
+            <!-- Manual Search Bar (Fallback) -->
+            <div class="px-6 mb-8">
+                <button onclick="switchToSearch()" class="w-full h-12 bg-white/10 hover:bg-white/15 border border-white/10 rounded-xl flex items-center px-4 transition-all group">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400 group-hover:text-white transition-colors mr-3"></i>
+                    <span class="text-gray-400 group-hover:text-white text-sm font-medium">Search by name or enter barcode...</span>
+                    <div class="ml-auto bg-white/10 w-6 h-6 rounded flex items-center justify-center">
+                        <i class="fa-solid fa-keyboard text-xs text-gray-300"></i>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Shutter Controls Row -->
+            <div class="flex items-center justify-around px-8 mb-4">
+                <!-- Gallery Import -->
+                <button class="flex flex-col items-center gap-1 group">
+                    <div class="w-12 h-12 rounded-full border border-white/20 bg-black/20 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                        <i class="fa-regular fa-image text-white text-lg"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wide">Gallery</span>
+                </button>
+
+                <!-- Main Shutter Button -->
+                <button onclick="capturePhoto()" class="relative group active:scale-95 transition-transform duration-200">
+                    <!-- Outer Ring -->
+                    <div class="w-20 h-20 rounded-full border-[4px] border-white flex items-center justify-center shadow-shutter">
+                        <!-- Inner Circle -->
+                        <div class="w-16 h-16 rounded-full bg-white group-active:scale-90 transition-transform duration-150"></div>
+                    </div>
+                </button>
+
+                <!-- Enter Code (Secondary Manual) -->
+                <button class="flex flex-col items-center gap-1 group">
+                    <div class="w-12 h-12 rounded-full border border-white/20 bg-black/20 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                        <i class="fa-solid fa-barcode text-white text-lg"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wide">Code</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation (Fixed) -->
+        <div class="absolute bottom-0 left-0 right-0 h-[80px] bg-black/40 backdrop-blur-xl border-t border-white/10 flex items-center justify-between px-6 pb-2 z-50">
+            <!-- Scan Tab (Active) -->
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-brand-primary">
+                <div class="relative p-1">
+                    <i class="fa-solid fa-expand text-xl"></i>
+                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-brand-primary rounded-full"></span>
+                </div>
+                <span class="text-[10px] font-semibold">Scan</span>
+            </button>
+
+            <!-- Search Tab -->
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-magnifying-glass text-xl"></i>
+                <span class="text-[10px] font-medium">Search</span>
+            </button>
+
+            <!-- Wallet Tab -->
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-wallet text-xl"></i>
+                <span class="text-[10px] font-medium">Wallet</span>
+            </button>
+
+            <!-- Profile Tab -->
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <div class="w-6 h-6 rounded-full bg-white/20 overflow-hidden border border-white/10">
+                    <img class="w-full h-full object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/2ddcd57b42-cef58db7c62a5f990a82.png" alt="professional headshot avatar of a young adult, friendly expression, minimalist style" />
+                </div>
+                <span class="text-[10px] font-medium">Profile</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Processing Overlay (Hidden initially) -->
+    <div id="processing-overlay" class="hidden fixed inset-0 z-[100] bg-black/80 backdrop-blur-xl flex flex-col items-center justify-center md:max-w-[480px] md:max-h-[850px] md:h-[90vh] md:rounded-[40px] md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2">
+        <div class="relative w-24 h-24 mb-8">
+            <div class="absolute inset-0 border-4 border-white/10 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-t-brand-primary border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i class="fa-solid fa-wand-magic-sparkles text-2xl text-white animate-pulse"></i>
+            </div>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Identifying Product...</h3>
+        <p class="text-gray-400 text-sm">Searching for best deals & coupons</p>
+    </div>
+
+    <!-- Script to handle interactions -->
+    <script>
+        let isFlashOn = false;
+
+        function toggleFlash() {
+            isFlashOn = !isFlashOn;
+            const btn = document.getElementById('flash-btn');
+            const icon = btn.querySelector('i');
+            
+            if (isFlashOn) {
+                btn.classList.add('bg-yellow-400', 'text-black');
+                btn.classList.remove('bg-white/10', 'text-white');
+                icon.classList.remove('text-white');
+                icon.classList.add('text-black');
+            } else {
+                btn.classList.remove('bg-yellow-400', 'text-black');
+                btn.classList.add('bg-white/10', 'text-white');
+                icon.classList.add('text-white');
+                icon.classList.remove('text-black');
+            }
+        }
+
+        function capturePhoto() {
+            // Simulate shutter effect
+            const app = document.getElementById('app-container');
+            const flash = document.createElement('div');
+            flash.className = 'absolute inset-0 bg-white z-50 transition-opacity duration-200 pointer-events-none';
+            app.appendChild(flash);
+            
+            // Fade out flash
+            setTimeout(() => {
+                flash.style.opacity = '0';
+                setTimeout(() => {
+                    flash.remove();
+                    showProcessing();
+                }, 200);
+            }, 50);
+        }
+
+        function showProcessing() {
+            const overlay = document.getElementById('processing-overlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            
+            // Simulate processing delay then "navigate" (alert for demo)
+            setTimeout(() => {
+                // In a real app, this would navigate to results
+                // window.location.href = 'results.html';
+                // For demo purpose, we just hide it back
+                 overlay.classList.add('hidden');
+                 overlay.classList.remove('flex');
+                 alert("Product Identified! Redirecting to results...");
+            }, 2000);
+        }
+
+        function switchToSearch() {
+            // Navigate to search tab logic
+            console.log("Switching to manual search...");
+        }
+
+        function hideError() {
+            document.getElementById('camera-error').classList.add('hidden');
+        }
+
+        // Simulate error state for demo (uncomment to test)
+        // setTimeout(() => {
+        //     document.getElementById('camera-error').classList.remove('hidden');
+        // }, 5000);
+    </script>
+</body>
+</html>
