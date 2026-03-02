@@ -1,6 +1,6 @@
-# PromoScan
+# Economizy
 
-PromoScan is a web application designed to help users find the best deals, coupons, and cashback offers for any product instantly. By simply scanning a product's barcode, users can unlock a variety of savings and rewards, making their shopping experience smarter and more economical.
+Economizy is a web application designed to help users find the best deals, coupons, and cashback offers for any product instantly. By simply scanning a product's barcode, users can unlock a variety of savings and rewards, making their shopping experience smarter and more economical.
 
 ## Features
 
