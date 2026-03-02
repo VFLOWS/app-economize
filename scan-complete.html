@@ -305,6 +305,9 @@
                     statusHeading.innerText = "Complete!";
                     statusSubtext.innerText = "Redirecting to results...";
                     timeRemaining.innerText = "0s";
+                    setTimeout(() => {
+                        window.location.href = 'benefits-results.html';
+                    }, 1000);
                 }
             }, intervalTime);
 

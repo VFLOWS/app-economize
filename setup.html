@@ -432,7 +432,7 @@
                     // Simulate navigation to next screen
                     btnContinue.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
                     setTimeout(() => {
-                        alert("Permissions granted! Proceeding to Camera Scan...");
+                        window.location.href = 'scan.html';
                     }, 1000);
                 };
             }

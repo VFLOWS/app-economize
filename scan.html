@@ -281,12 +281,7 @@
             
             // Simulate processing delay then "navigate" (alert for demo)
             setTimeout(() => {
-                // In a real app, this would navigate to results
-                // window.location.href = 'results.html';
-                // For demo purpose, we just hide it back
-                 overlay.classList.add('hidden');
-                 overlay.classList.remove('flex');
-                 alert("Product Identified! Redirecting to results...");
+                window.location.href = 'scan-complete.html';
             }, 2000);
         }
 
