@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoScan - History Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#B46445',
+                            secondary: '#F5F2EF',
+                            accent: '#3B82F6',
+                            surface: '#FFFFFF',
+                            text: '#1E293B',
+                            muted: '#94A3B8',
+                            error: '#EF4444',
+                            success: '#10B981',
+                            warning: '#F59E0B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'card': '0 10px 40px -10px rgba(0, 0, 0, 0.2)',
+                        'glow': '0 0 30px rgba(180, 100, 69, 0.4)',
+                    },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-black font-sans text-white h-screen overflow-hidden flex flex-col items-center justify-center">
+
+    <div id="app-container" class="w-full h-full md:max-w-[480px] md:max-h-[850px] md:h-[90vh] bg-brand-dark md:rounded-[40px] shadow-2xl overflow-hidden relative flex flex-col">
+        
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="absolute inset-0 bg-gradient-to-b from-brand-dark via-gray-900 to-black"></div>
+        </div>
+
+        <div id="header" class="relative z-30 pt-12 pb-2 px-6 flex justify-between items-center bg-brand-dark/80 backdrop-blur-md border-b border-white/5">
+            <button onclick="window.location.href='history.html'" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/10 transition-all active:scale-95 group">
+                <i class="fa-solid fa-chevron-left text-white/70 group-hover:text-white text-lg"></i>
+            </button>
+            
+            <div class="flex flex-col items-center">
+                <span class="text-sm font-semibold tracking-wider text-white uppercase">Details</span>
+            </div>
+
+            <button class="w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/10 transition-all active:scale-95 group">
+                <i class="fa-solid fa-ellipsis-vertical text-white/70 group-hover:text-white text-lg"></i>
+            </button>
+        </div>
+
+        <main class="relative z-10 flex-1 overflow-y-auto w-full hide-scrollbar pb-24">
+            
+            <!-- Product Identified Card -->
+            <div id="product-card" class="px-4 pt-4 pb-2">
+                <div class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center relative overflow-hidden group">
+                    <!-- Product Image -->
+                    <div class="w-full sm:w-24 aspect-[4/5] rounded-xl overflow-hidden bg-white/5 border border-white/10 flex-shrink-0 relative">
+                        <img class="w-full h-full object-contain" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/6a72ced7af-4be359f0ffb2701da65e.png" alt="Sony WH-1000XM5 wireless headphones in black, studio product photography, clean background" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="flex-1 pt-1 w-full">
+                        <h2 class="text-lg md:text-xl font-bold text-white leading-tight mb-1">Sony WH-1000XM5</h2>
+                        <p class="text-xs text-brand-muted mb-3">Scanned on: 02 Mar 2026, 14:32</p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <button onclick="window.location.href='scan-complete.html'" class="w-full sm:w-auto px-4 py-2 rounded-lg bg-brand-primary/80 hover:bg-brand-primary text-xs font-bold text-white transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-arrows-rotate"></i> Rescan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters & Sorting -->
+            <div id="filters-section" class="px-4 py-2 sticky top-0 z-20 backdrop-blur-xl bg-brand-dark/80 border-b border-white/5 -mx-px">
+                <div class="flex justify-between items-center pt-2">
+                    <p class="text-xs text-brand-muted">Found <span class="text-white font-semibold">4</span> benefits at time of scan</p>
+                </div>
+            </div>
+
+            <!-- Benefits Lists -->
+            <div class="px-4 space-y-6 pt-4">
+
+                <!-- Best Match / Featured -->
+                <div id="section-featured">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-award text-brand-primary text-sm"></i>
+                        <h3 class="text-sm font-semibold text-white/90 uppercase tracking-wide">Applied Benefit</h3>
+                    </div>
+                    
+                    <!-- Coupon Card -->
+                    <div class="glass-card rounded-xl p-0 overflow-hidden mb-4 relative group transition-all duration-300 hover:shadow-glow border-l-4 border-l-brand-success">
+                        <div class="p-4 flex justify-between items-start bg-gradient-to-r from-brand-success/10 to-transparent">
+                            <div class="flex gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-white p-1 flex items-center justify-center shadow-lg">
+                                    <i class="fa-brands fa-amazon text-xl text-black"></i>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-white text-lg">20% OFF</h4>
+                                        <span class="px-1.5 py-0.5 rounded bg-brand-success/20 text-brand-success text-[10px] font-bold border border-brand-success/20">APPLIED</span>
+                                    </div>
+                                    <p class="text-xs text-brand-muted mt-0.5">Amazon Prime Day Deal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Available Discounts -->
+                <div id="section-store">
+                    <h3 class="text-sm font-semibold text-white/90 uppercase tracking-wide mb-3 pl-1">Other offers (at time of scan)</h3>
+                    
+                    <!-- Discount Card 1 -->
+                    <div class="glass-card rounded-xl p-3 flex gap-3 mb-3 opacity-60">
+                        <div class="w-12 h-12 rounded-lg bg-blue-600/50 flex items-center justify-center flex-shrink-0 text-white/70 shadow-lg">
+                            <i class="fa-solid fa-shop text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h4 class="font-semibold text-white/80 text-sm">Best Buy Member Price</h4>
+                                <span class="text-brand-muted text-xs font-bold">-$50.00</span>
+                            </div>
+                            <p class="text-[10px] text-brand-muted mt-0.5 mb-2">In-store only • Requires Membership</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] bg-white/5 px-2 py-0.5 rounded text-white/60">Expired 12/31/2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cashback & Points -->
+                <div id="section-rewards">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Cashback Card -->
+                        <div class="glass-card rounded-xl p-3 flex flex-col h-full opacity-60">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="w-8 h-8 rounded-full bg-purple-500/10 text-purple-400/70 flex items-center justify-center border border-purple-500/20">
+                                    <i class="fa-solid fa-sack-dollar text-sm"></i>
+                                </div>
+                                <span class="bg-purple-500/10 text-purple-400/70 text-[10px] px-1.5 py-0.5 rounded font-bold">6% Back</span>
+                            </div>
+                            <h4 class="font-semibold text-white/80 text-sm mb-1">Rakuten</h4>
+                            <p class="text-[10px] text-brand-muted mb-3 flex-1">Activate before purchase</p>
+                        </div>
+
+                        <!-- Credit Card Points -->
+                        <div class="glass-card rounded-xl p-3 flex flex-col h-full opacity-60">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="w-8 h-8 rounded-full bg-blue-500/10 text-blue-400/70 flex items-center justify-center border border-blue-500/20">
+                                    <i class="fa-solid fa-credit-card text-sm"></i>
+                                </div>
+                                <span class="bg-blue-500/10 text-blue-400/70 text-[10px] px-1.5 py-0.5 rounded font-bold">3x Pts</span>
+                            </div>
+                            <h4 class="font-semibold text-white/80 text-sm mb-1">Chase Sapphire</h4>
+                            <p class="text-[10px] text-brand-muted mb-3 flex-1">Electronics Category</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="absolute bottom-0 left-0 right-0 h-[80px] bg-black/40 backdrop-blur-xl border-t border-white/10 flex items-center justify-between px-6 pb-2 z-50">
+            <button onclick="window.location.href='scan.html'" class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-expand text-xl"></i>
+                <span class="text-[10px] font-medium">Scan</span>
+            </button>
+            <button onclick="window.location.href='history.html'" class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-brand-primary">
+                <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+                <span class="text-[10px] font-semibold">History</span>
+            </button>
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-wallet text-xl"></i>
+                <span class="text-[10px] font-medium">Wallet</span>
+            </button>
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <div class="w-6 h-6 rounded-full bg-white/20 overflow-hidden border border-white/10">
+                    <img class="w-full h-full object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/2ddcd57b42-cef58db7c62a5f990a82.png" alt="Profile" />
+                </div>
+                <span class="text-[10px] font-medium">Profile</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>

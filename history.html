@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoScan - History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0F172A',
+                            primary: '#B46445',
+                            secondary: '#F5F2EF',
+                            accent: '#3B82F6',
+                            surface: '#FFFFFF',
+                            text: '#1E293B',
+                            muted: '#94A3B8',
+                            error: '#EF4444',
+                            success: '#10B981',
+                            warning: '#F59E0B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'card': '0 10px 40px -10px rgba(0, 0, 0, 0.2)',
+                        'glow': '0 0 30px rgba(180, 100, 69, 0.4)',
+                    },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-black font-sans text-white h-screen overflow-hidden flex flex-col items-center justify-center">
+
+    <div id="app-container" class="w-full h-full md:max-w-[480px] md:max-h-[850px] md:h-[90vh] bg-brand-dark md:rounded-[40px] shadow-2xl overflow-hidden relative flex flex-col">
+        
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="absolute inset-0 bg-gradient-to-b from-brand-dark via-gray-900 to-black"></div>
+        </div>
+
+        <div id="header" class="relative z-30 pt-12 pb-2 px-6 flex justify-between items-center bg-brand-dark/80 backdrop-blur-md border-b border-white/5">
+            <button onclick="window.location.href='scan.html'" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/10 transition-all active:scale-95 group">
+                <i class="fa-solid fa-chevron-left text-white/70 group-hover:text-white text-lg"></i>
+            </button>
+            
+            <div class="flex flex-col items-center">
+                <span class="text-sm font-semibold tracking-wider text-white uppercase">History</span>
+            </div>
+
+            <button class="w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center hover:bg-white/10 transition-all active:scale-95 group">
+                <i class="fa-solid fa-trash text-white/70 group-hover:text-white text-lg"></i>
+            </button>
+        </div>
+
+        <main class="relative z-10 flex-1 overflow-y-auto w-full hide-scrollbar pb-24">
+            <div class="px-4 space-y-4 pt-4">
+                
+                <!-- History Item 1 -->
+                <div onclick="window.location.href='history-detail.html'" class="glass-card rounded-xl p-3 flex gap-3 items-center cursor-pointer hover:bg-white/10 transition-colors">
+                    <div class="w-16 h-16 rounded-lg bg-white/5 border border-white/10 flex-shrink-0">
+                        <img class="w-full h-full object-contain" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/6a72ced7af-4be359f0ffb2701da65e.png" alt="Sony WH-1000XM5 headphones">
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-white text-sm">Sony WH-1000XM5</h4>
+                        <p class="text-xs text-brand-muted mt-1">Scanned on: 02 Mar 2026</p>
+                    </div>
+                    <button class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+                        <i class="fa-solid fa-chevron-right text-xs text-white/50"></i>
+                    </button>
+                </div>
+
+                <!-- History Item 2 -->
+                <div onclick="window.location.href='history-detail.html'" class="glass-card rounded-xl p-3 flex gap-3 items-center cursor-pointer hover:bg-white/10 transition-colors">
+                    <div class="w-16 h-16 rounded-lg bg-white/5 border border-white/10 flex-shrink-0">
+                         <img class="w-full h-full object-contain" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/d57ec656e3-7a73e702a69b43a89b40.png" alt="Product Image">
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-white text-sm">Premium Headphones</h4>
+                        <p class="text-xs text-brand-muted mt-1">Scanned on: 01 Mar 2026</p>
+                    </div>
+                     <button class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+                        <i class="fa-solid fa-chevron-right text-xs text-white/50"></i>
+                    </button>
+                </div>
+
+            </div>
+        </main>
+
+        <div class="absolute bottom-0 left-0 right-0 h-[80px] bg-black/40 backdrop-blur-xl border-t border-white/10 flex items-center justify-between px-6 pb-2 z-50">
+            <button onclick="window.location.href='scan.html'" class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-expand text-xl"></i>
+                <span class="text-[10px] font-medium">Scan</span>
+            </button>
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-brand-primary">
+                <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+                <span class="text-[10px] font-semibold">History</span>
+            </button>
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <i class="fa-solid fa-wallet text-xl"></i>
+                <span class="text-[10px] font-medium">Wallet</span>
+            </button>
+            <button class="flex-1 flex flex-col items-center justify-center gap-1 h-full text-white/50 hover:text-white transition-colors">
+                <div class="w-6 h-6 rounded-full bg-white/20 overflow-hidden border border-white/10">
+                    <img class="w-full h-full object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/2ddcd57b42-cef58db7c62a5f990a82.png" alt="Profile" />
+                </div>
+                <span class="text-[10px] font-medium">Profile</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
