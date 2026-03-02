@@ -304,7 +304,7 @@
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.classList.remove('opacity-80', 'cursor-not-allowed');
-                    alert("Login simulation successful! Redirecting to Scan...");
+                    window.location.href = 'setup.html';
                 }, 1500);
             }
         }
